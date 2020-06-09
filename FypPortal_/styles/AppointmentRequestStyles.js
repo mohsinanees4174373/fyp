@@ -1,0 +1,180 @@
+import {Platform, StyleSheet, Dimensions} from 'react-native';
+import {AppStyles} from './RequestFormStyle';
+//import { Configuration } from "./Configuration";
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  Icon: {
+    padding: 10,
+    width: 10,
+    height: 10,
+  },
+  Icon2: {
+    padding: 7,
+    width: "9%",
+    height: "10%",
+  },
+  SectionStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 20,
+    flex: 1,
+  },
+  DateSectionStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 10,
+    marginRight: 20,
+    paddingRight: 20,
+    flex: 1,
+    marginTop: 30,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: AppStyles.color.grey,
+    borderRadius: AppStyles.borderRadius.main,
+  },
+  TimeSectionStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 20,
+    flex: 1,
+    //justifyContent: 'center',
+    marginTop: 30,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: AppStyles.color.grey,
+    borderRadius: AppStyles.borderRadius.main,
+  },
+  description: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 20,
+    height: 130,
+    top: -40,
+  },
+  upperBar: {
+    backgroundColor: '#2B60DE',
+    paddingLeft: 90,
+    paddingRight: 90,
+    flexDirection: 'row',
+    height: 65,
+    flex: 1,
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    width: 300,
+    color: AppStyles.color.white,
+    marginTop: 10,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  date: {
+    height: 42,
+    paddingLeft: 10,
+    paddingTop: 1,
+    color: AppStyles.color.text,
+  },
+  count: {
+    height: 42,
+    paddingLeft: 5,
+    paddingTop: "9%",
+    color: AppStyles.color.text,
+  },
+  content: {
+    paddingLeft: 50,
+    paddingRight: 50,
+    textAlign: 'center',
+    fontSize: AppStyles.fontSize.content,
+    color: AppStyles.color.text,
+  },
+  loginContainer: {
+    width: AppStyles.buttonWidth.main,
+    backgroundColor: AppStyles.color.tint,
+    borderRadius: AppStyles.borderRadius.main,
+    padding: 10,
+    marginTop: 30,
+  },
+  loginText: {
+    color: AppStyles.color.white,
+  },
+  placeholder: {
+    fontFamily: AppStyles.fontName.text,
+    color: 'red',
+  },
+  InputContainer: {
+    width: AppStyles.textInputWidth.main,
+    marginTop: 30,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: AppStyles.color.grey,
+    borderRadius: AppStyles.borderRadius.main,
+  },
+  DateTimeContainer: {
+    width: AppStyles.textInputWidth.main,
+    flexDirection: 'row',
+  },
+  body: {
+    height: 42,
+    paddingLeft: 20,
+    paddingRight: 20,
+    color: AppStyles.color.text,
+  },
+  text: {
+    height: 42,
+    paddingLeft: 20,
+    paddingTop: "5%",
+    paddingRight: 20,
+    color: AppStyles.color.text,
+  },
+  text2: {
+    height: 42,
+    paddingLeft: 15,
+    paddingTop: "5%",
+    paddingRight: 20,
+    color: AppStyles.color.text,
+  },
+  facebookContainer: {
+    width: AppStyles.buttonWidth.main,
+    backgroundColor: '#2B60DE',
+    borderRadius: AppStyles.borderRadius.main,
+    padding: 10,
+    marginTop: 30,
+  },
+  facebookText: {
+    color: AppStyles.color.white,
+  },
+  purpose: {
+    height: 130,
+    justifyContent: 'flex-start',
+    paddingLeft: 10,
+    width: 230,
+    top: 45,
+    color: AppStyles.color.text,
+    textAlignVertical: 'top',
+    flexDirection: 'row-reverse',
+    borderColor: '#2B60DE',
+  },
+  TimeStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 20,
+    flex: 1,
+    width:200,
+    marginLeft:40
+  },
+  Timebody:{
+
+  }
+  ,
+  TimeTxtStyle: {
+    marginTop:10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 20,
+    flex: 1,
+  },
+});

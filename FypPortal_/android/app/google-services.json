@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "59484362863",
+    "firebase_url": "https://fypportal-f156b.firebaseio.com",
+    "project_id": "fypportal-f156b",
+    "storage_bucket": "fypportal-f156b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:59484362863:android:f0249c1a24fdeb646a159a",
+        "android_client_info": {
+          "package_name": "com.fypportal_"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "59484362863-7nvg6p18odncsge9b1hoah2g2ubtniba.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyV2vchckwx47WGTiTdt4AN2xHWDI3grQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "59484362863-7nvg6p18odncsge9b1hoah2g2ubtniba.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
