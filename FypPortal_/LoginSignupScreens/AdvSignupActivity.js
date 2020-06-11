@@ -59,76 +59,124 @@ class AdvSignupActivity extends Component {
   };
 
   checkSignup() {
-    if (this.state.Name == '') {
+      //Alert.alert('k');
+      this.state.Name = this.state.Name.trim();
+      this.state.email = this.state.email.trim();
+      this.state.password = this.state.password.trim();
+      this.state.cnfrmPassword = this.state.cnfrmPassword.trim();
+      this.state.Qualification = this.state.Qualification.trim();
+      this.state.Designation = this.state.Designation.trim();
+      
+    if (this.state.Name== '') {
       Alert.alert('Name cannot be empty!');
-    } else if (this.state.email == '') {
+    }
+    else if (this.state.email== '') {
       Alert.alert('Email cannot be empty!');
-    } else if (this.state.phone == '') {
+    }
+    else if (this.state.phone== '') {
       Alert.alert('Phone # cannot be empty!');
-    } else if (this.state.password == '') {
+    }
+    else if (this.state.password== '') {
       Alert.alert('Password cannot be empty!');
-    } else if (this.state.cnfrmPassword == '') {
+    }
+    else if (this.state.cnfrmPassword== '') {
       Alert.alert('Confirm Password cannot be empty!');
-    } else if (this.state.Qualification == '') {
+    }
+    else if (this.state.Qualification == '') {
       Alert.alert('Qualification cannot be empty!');
-    } else if (this.state.Designation == '') {
+    }
+    else if (this.state.Designation == '') {
       Alert.alert('Designation cannot be empty!');
-    } else if (this.state.cnfrmPassword != this.state.password) {
+    }
+    else if (this.state.cnfrmPassword != this.state.password) {
       Alert.alert('Paswword and Confirm Password does not match!');
-    }  else if (this.state.email != '') {
-      if (this.state.email.includes('@pucit.edu.pk')) {
-        var mail = this.state.email.split('@');
-        if (mail.length == 2) {
-          if (mail[1] == 'pucit.edu.pk') {
-            fetch(url.base_url + '/checkAdvAvailibility', {
-              method: 'POST',
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                email: this.state.email,
-              }),
-            })
-              .then((response) => response.json())
-              .then((responseJson) => {
-                if (!responseJson[0]) {
-                  fetch(url.base_url + '/insertAdvisor', {
-                    method: 'POST',
-                    headers: {
-                      Accept: 'application/json',
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                      Name: this.state.Name,
-                      phone: this.state.phone,
+    }
+    else if (!((/^[a-zA-Z]{2,40}( [a-zA-Z]{2,40})+$/).test(this.state.Name)) && !((/^[a-zA-Z]{2,40}( [a-zA-Z]{2,40})+$/).test(this.state.Name))){
+        Alert.alert('Invalid Name!');
+    }
+    else if (this.state.phone.length != 5 || isNaN(parseInt(this.state.phone))){
+      Alert.alert('Invalid Phone #!');
+    }
+    else if(this.state.email != ''){
+      if(this.state.email.includes("@pucit.edu.pk")){
+          var mail = this.state.email.split("@");
+          if(mail.length == 2){
+              if(mail[1] == "pucit.edu.pk"){
+                  fetch(url.base_url + "/checkAdvAvailibility", {
+                  //fetch(url + "/checkAdvAvailibility", {
+                      method: 'POST',
+                      headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+                  },
+                      body: JSON.stringify({
                       email: this.state.email,
-                      password: this.state.password,
-                      Qualification: this.state.Qualification,
-                      Designation: this.state.Designation,
-                    }),
+                      })
                   })
-                    .then((response) => response.json())
-                    .then((responseJson) => {
-                      console.log(responseJson);
-                      this._storeAdvisorSignUpData();
-                      this.props.navigation.navigate('AdvisorHomeScreen');
-                    });
-                } else {
-                  Alert.alert('Already Exist!');
-                }
-              });
-          } else {
-            Alert.alert('Invalid Email!');
+                  .then((response) => response.json())
+                  .then((responseJson) => {
+                      if(!responseJson[0])
+                      {
+                          fetch(url.base_url + "/checkAdvAvailibilityInList", {
+                          //fetch(url + "/checkAdvAvailibilityInList", {
+                          method: 'POST',
+                          headers: {
+                          'Accept': 'application/json',
+                          'Content-Type': 'application/json'
+                          },
+                          body: JSON.stringify({
+                          email: this.state.email,
+                          })
+                          })
+                          .then((response) => response.json())
+                          .then((responseJson) => {
+                              if(responseJson[0]){
+                                      fetch(url.base_url + "/insertAdvisor", {
+                                      //fetch(url + "/insertAdvisor", {
+                                      method: 'POST',
+                                      headers: {
+                                      'Accept': 'application/json',
+                                      'Content-Type': 'application/json'
+                                  },
+                                  body: JSON.stringify({
+                                      Name: this.state.Name,
+                                      phone: this.state.phone,
+                                      email: this.state.email,
+                                      password: this.state.password,
+                                      Qualification: this.state.Qualification,
+                                      Designation: this.state.Designation,
+                                  })
+                              })
+                              .then((response) => response.json())
+                              .then((responseJson) => {
+                              console.log(responseJson);
+                              this._storeAdvisorSignUpData();
+                              this.props.navigation.navigate('AdvisorHomeScreen');
+                              })
+                              }
+                              else{
+                                  Alert.alert('Not registered!');
+                              }
+                          })
+                  }
+                  else{
+                       Alert.alert('Already Exist!');
+                  }
+                  })
+              }
+              else{
+                  Alert.alert('Invalid Email!');
+              }
           }
-        } else {
+          else{
+              Alert.alert('Invalid Email!');
+          }
+      }
+      else{
           Alert.alert('Invalid Email!');
-        }
-      } else {
-        Alert.alert('Invalid Email!');
       }
     }
-  }
+  };
 
   render() {
     return (

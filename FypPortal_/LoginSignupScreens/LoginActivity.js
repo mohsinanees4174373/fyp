@@ -43,13 +43,14 @@ class LoginActivity extends Component {
     this.state = {
       email: '',
       password: '',
+      name: '',
     };
   }
   _storeStudentData = async (pass) => {
     try {
       console.log('storing Data');
       await AsyncStorage.setItem('email', this.state.email);
-      await AsyncStorage.setItem('password', pass);
+      await AsyncStorage.setItem('password', this.state.password);
       await AsyncStorage.setItem('user', 'student');
       const value = await AsyncStorage.getItem('password');
       console.log(value);
@@ -61,28 +62,46 @@ class LoginActivity extends Component {
     try {
       console.log('storing Data');
       await AsyncStorage.setItem('email', this.state.email);
-      await AsyncStorage.setItem('password', pass);
+      await AsyncStorage.setItem('password', this.state.password);
       const t = await AsyncStorage.getItem('password');
       await AsyncStorage.setItem('user', 'advisor');
     } catch (error) {
       console.log('ethy v error bro');
     }
   };
+  _storeAdminData = async () => {
+    try {
+      console.log('storing Data');
+      await AsyncStorage.setItem('email', this.state.email);
+      await AsyncStorage.setItem('name', this.state.name);
+      await AsyncStorage.setItem('password', this.state.password);
+      await AsyncStorage.setItem('user', 'admin');
+    } catch (error) {
+      console.log('ethy v error bro');
+    }
+  };
   _retriveData = async () => {
     try {
-      console.log('retrivingData');
+      console.log('retrivingData')
       //await AsyncStorage.removeItem("password");
       //await AsyncStorage.removeItem("user");
       //await AsyncStorage.removeItem("email");
-      const value = await AsyncStorage.getItem('user');
+      const value = await AsyncStorage.getItem("user");
       console.log(value);
       if (value !== null) {
-        if (value === 'student') {
-          this.setState({email: '', password: ''});
-          this.props.navigation.navigate('StudentHomeScreen');
-        } else if (value === 'advisor') {
-          this.setState({email: '', password: ''});
-          this.props.navigation.navigate('AdvisorHomeScreen');
+        if(value === 'student')
+        {
+          this.props.navigation.navigate('StudentHomeScreen');    
+        }else if(value ==='advisor')
+        {
+          this.props.navigation.navigate('AdvisorHomeScreen'); 
+        }else if(value === 'admin')
+        {
+          this.props.navigation.navigate('AdminProfile',{
+              admin_email: this.state.email,
+              admin_name: this.state.name,
+              admin_pwd: this.state.password,
+            }); 
         }
       }
     } catch (error) {
@@ -147,56 +166,100 @@ class LoginActivity extends Component {
 
 
   checkLogin() {
-    if (this.state.email == '') {
+    
+
+    if (this.state.email== '') {
       Alert.alert('Email cannot be empty!');
-    } else if (this.state.password == '') {
+    }
+    else if (this.state.password == '') {
+
       Alert.alert('Password cannot be empty!');
-    } else {
-      fetch(url.base_url + '/checkStudentLogin', {
+
+    }
+    else
+    {
+      
+    fetch(url.base_url + "/checkStudentLogin", {
         method: 'POST',
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
           email: this.state.email,
           password: this.state.password,
-        }),
       })
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+        if(responseJson[0])
+        {
+          console.log(responseJson);
+
+          this._storeStudentData();
+          this.props.navigation.navigate('StudentHomeScreen');
+        }
+        else
+        {
+          fetch( url.base_url + "/checkAdvisorLogin", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              email: this.state.email,
+              password: this.state.password,
+          })
+        })
         .then((response) => response.json())
         .then((responseJson) => {
-          if (responseJson[0]) {
-            console.log(responseJson);
-            console.log(responseJson[0].password);
-            this.setState({password: responseJson[0].password});
-            this._storeStudentData(responseJson[0].password);
-            //this.setState({email:'',password:''});
-            this.props.navigation.navigate('StudentHomeScreen');
-          } else {
-            fetch(url.base_url + '/checkAdvisorLogin', {
-              method: 'POST',
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                email: this.state.email,
-                password: this.state.password,
-              }),
-            })
-              .then((response) => response.json())
-              .then((responseJson) => {
-                if (responseJson[0]) {
-                  this._storeAdvisorData(responseJson[0].password);
-                  this.setState({email: '', password: ''});
-                  this.props.navigation.navigate('AdvisorHomeScreen');
-                } else {
-                  Alert.alert('Invalid Username/Password');
-                }
-              });
-          }
-        });
-    }
+            if(responseJson[0])
+            {
+              this._storeAdvisorData();
+              this.props.navigation.navigate('AdvisorHomeScreen'); 
+            }
+            else
+            {
+              fetch( url.base_url + "/checkAdminLogin", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              email: this.state.email,
+              password: this.state.password,
+          })
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            if(responseJson[0])
+            {
+              this._storeAdminData();
+              this.state.name = responseJson[0].Name;
+              this.state.pwd = responseJson[0].password;
+              //Alert.alert(this.state.name);
+              this.props.navigation.navigate('AdminProfile' , {
+              admin_email: this.state.email,
+              admin_name: this.state.name,
+              admin_pwd: this.state.pwd,
+            }); 
+            }
+            else
+            {
+              Alert.alert('Invalid Username/Password');
+            }
+          })
+            }
+          })
+    
+    
+        }
+      })
+      
+  }
+
   }
 
   componentDidMount() {

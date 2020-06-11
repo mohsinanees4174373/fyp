@@ -40,8 +40,9 @@ class ChangePwdActivity extends Component {
     try {
       console.log('retrivingData');
       this.state.email = await AsyncStorage.getItem('email');
-      const value = await AsyncStorage.getItem('password');
-      this.setState({OldPassword: value});
+      this.state.OldPassword = await AsyncStorage.getItem('password')
+      //const value = await AsyncStorage.getItem('password');
+      //this.setState({OldPassword: value});
       this.state.user = await AsyncStorage.getItem('user');
     } catch (error) {
       console.log(error.message);
@@ -68,7 +69,7 @@ class ChangePwdActivity extends Component {
       console.log(this.state.email);
       console.log(this.state.OldPassword);
       if (this.state.oldPass !== this.state.OldPassword) {
-        Alert.alert('Old password dosnt match!');
+        Alert.alert('Old password dosent match!!');
       } else {
         console.log(this.state.user);
         var callUrl;

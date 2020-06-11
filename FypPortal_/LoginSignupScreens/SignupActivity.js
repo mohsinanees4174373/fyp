@@ -62,112 +62,136 @@ class SignupActivity extends Component {
   };
 
   checkSignup() {
-    if (this.state.Name == '') {
+      
+    this.state.Name = this.state.Name.trim();
+    this.state.email = this.state.email.trim();
+    this.state.password = this.state.password.trim();
+    this.state.cnfrmPassword = this.state.cnfrmPassword.trim();
+    this.state.address = this.state.address.trim();
+    
+    if (this.state.Name== '') {
       Alert.alert('Name cannot be empty!');
-    } else if (this.state.email == '') {
+    }
+    else if (this.state.email== '') {
       Alert.alert('Email cannot be empty!');
-    } else if (this.state.phone == '') {
+    }
+    else if (this.state.phone== '') {
       Alert.alert('Phone # cannot be empty!');
-    } else if (this.state.password == '') {
+    }
+    else if (this.state.address== '') {
+      Alert.alert('Address cannot be empty!');
+    }
+    else if (this.state.password== '') {
       Alert.alert('Password cannot be empty!');
-    } else if (this.state.cnfrmPassword == '') {
+    }
+    else if (this.state.cnfrmPassword== '') {
       Alert.alert('Confirm Password cannot be empty!');
-    } else if (this.state.Degree == '') {
+    }
+    else if (this.state.Degree == '') {
       Alert.alert('Degree cannot be empty!');
-    } else if (this.state.cnfrmPassword != this.state.password) {
+    }
+    else if (this.state.cnfrmPassword != this.state.password) {
       Alert.alert('Paswword and Confirm Password does not match!');
-    } else if (this.state.email != '') {
-      if (this.state.email.includes('@pucit.edu.pk')) {
-        var mail = this.state.email.split('@');
-        if (mail.length == 2) {
-          if (mail[1] == 'pucit.edu.pk') {
-            if (mail[0].length == 10) {
-              var rollNum = Array.from(mail[0]);
-              var dgre = rollNum[0] + rollNum[1] + rollNum[2];
-              if (
-                (dgre == 'bse' ||
-                  dgre == 'bcs' ||
-                  dgre == 'bit' ||
-                  dgre == 'mcs') &&
-                rollNum[3] == 'f' &&
-                (rollNum[6] == 'm' || rollNum[6] == 'a')
-              ) {
-                var yr = rollNum[4] + rollNum[5];
-                if (!isNaN(parseInt(yr))) {
-                  var rn = rollNum[7] + rollNum[8] + rollNum[9];
-                  if (isNaN(parseInt(rn))) {
-                    Alert.alert('Invalid Email!');
-                  } else {
-                    if (
-                      (dgre == 'bse' && this.state.Degree == 'BSSE') ||
-                      (dgre == 'bcs' && this.state.Degree == 'BSCS') ||
-                      (dgre == 'bit' && this.state.Degree == 'BSIT') ||
-                      (dgre == 'mcs' && this.state.Degree == 'MCS')
-                    ) {
-                      fetch(url.base_url + '/checkStdAvailibility', {
-                        method: 'POST',
-                        headers: {
-                          Accept: 'application/json',
-                          'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                          email: this.state.email,
-                        }),
-                      })
-                        .then((response) => response.json())
-                        .then((responseJson) => {
-                          if (!responseJson[0]) {
-                            fetch(url.base_url + '/insertStudent', {
-                              method: 'POST',
-                              headers: {
-                                Accept: 'application/json',
-                                'Content-Type': 'application/json',
-                              },
-                              body: JSON.stringify({
-                                Name: this.state.Name,
-                                Degree: this.state.Degree,
-                                phone: this.state.phone,
-                                email: this.state.email,
-                                password: this.state.password,
-                                address: this.state.address,
-                              }),
-                            })
-                              .then((response) => response.json())
-                              .then((responseJson) => {
-                                console.log(responseJson);
-                                this._storeStudentSignUpData();
-                                this.props.navigation.navigate(
-                                  'StudentHomeScreen',
-                                );
-                              });
-                          } else {
-                            Alert.alert('Already Exist!');
+    }
+    else if (!((/^[a-zA-Z]{2,40}( [a-zA-Z]{2,40})+$/).test(this.state.Name)) && !((/^[a-zA-Z]{2,40}( [a-zA-Z]{2,40})+$/).test(this.state.Name))){
+        Alert.alert('Invalid Name!');
+    }
+    else if (this.state.phone.length != 5 || isNaN(parseInt(this.state.phone))){
+      Alert.alert('Invalid Phone #!');
+    }
+    else if(this.state.email != ''){
+      if(this.state.email.includes("@pucit.edu.pk")){
+          var mail = this.state.email.split("@");
+          if(mail.length == 2){
+              if(mail[1] == "pucit.edu.pk"){
+                  if(mail[0].length == 10){
+                      var rollNum = Array.from(mail[0]);
+                      var dgre = rollNum[0] + rollNum[1] + rollNum[2];
+                      if((dgre == 'bse' || dgre == 'bcs' || dgre == 'bit' || dgre == 'mcs') && rollNum[3] == 'f' && (rollNum[6] == 'm' || rollNum[6] == 'a')){
+                          var yr = rollNum[4] + rollNum[5];
+                          if(!isNaN(parseInt(yr))){
+                              var rn = rollNum[7] + rollNum[8] + rollNum[9];
+                              if(isNaN(parseInt(rn))){
+                                  Alert.alert('Invalid Email!');
+                              }else{
+                                  if((dgre == 'bse' && this.state.Degree == 'BSSE') || (dgre == 'bcs' && this.state.Degree == 'BSCS') || (dgre == 'bit' && this.state.Degree == 'BSIT') || (dgre == 'mcs' && this.state.Degree == 'MCS')){
+                                      fetch(url.base_url + "/checkStdAvailibility", {
+                                      //fetch(url + "/checkStdAvailibility", {
+                                        method: 'POST',
+                                        headers: {
+                                            'Accept': 'application/json',
+                                            'Content-Type': 'application/json'
+                                      },
+                                      body: JSON.stringify({
+                                          email: this.state.email,
+                                      })
+                                    })
+                                    .then((response) => response.json())
+                                    .then((responseJson) => {
+                                         // Alert.alert('k');
+                                          if(!responseJson[0])
+                                            {
+                                                //Alert.alert('1');
+                                              fetch(url.base_url + "/insertStudent", {
+                                               // fetch(url + "/insertStudent", {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Accept': 'application/json',
+                                                    'Content-Type': 'application/json'
+                                              },
+                                              body: JSON.stringify({
+                                                  Name: this.state.Name,
+                                                  Degree: this.state.Degree,
+                                                  phone: this.state.phone,
+                                                  email: this.state.email,
+                                                  password: this.state.password,
+                                                  address: this.state.address,
+                                              })
+                                            })
+                                            .then((response) => response.json())
+                                            .then((responseJson) => {
+                                                  //Alert.alert('2');
+                                                  console.log(responseJson);
+                                                  this._storeStudentSignUpData();
+                                                  this.props.navigation.navigate('StudentHomeScreen');
+                                              })
+                                            }
+                                          else{
+                                              Alert.alert('Already Exist!');
+                                          }
+                                      })
+                                      }
+                                          
+                                  else{
+                                      Alert.alert('Invalid Email or Degree!');
+                                  }
+                              }
                           }
-                        });
-                    } else {
-                      Alert.alert('Invalid Email or Degree!');
-                    }
+                          else{
+                              Alert.alert('Invalid Email!');
+                          }
+                      }
+                      else{
+                          Alert.alert('Invalid Email!');
+                      }
                   }
-                } else {
-                  Alert.alert('Invalid Email!');
-                }
-              } else {
-                Alert.alert('Invalid Email!');
+                  else{
+                      Alert.alert('Invalid Email!');
+                  }
               }
-            } else {
-              Alert.alert('Invalid Email!');
-            }
-          } else {
-            Alert.alert('Invalid Email!');
+              else{
+                  Alert.alert('Invalid Email!');
+              }
           }
-        } else {
+          else{
+              Alert.alert('Invalid Email!');
+          }
+      }
+      else{
           Alert.alert('Invalid Email!');
-        }
-      } else {
-        Alert.alert('Invalid Email!');
       }
     }
-  }
+  };
 
   render() {
     return (

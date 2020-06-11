@@ -50,6 +50,13 @@ import StudentEditProfileActivity from './sidebarNavigationScreens/EditProfileAc
 import AdvisorCustom_Side_Menu from './StudentHomeAfterLogin/AdvisorCustom_Side_Menu';
 import AdvSignupActivity from './LoginSignupScreens/AdvSignupActivity';
 import ChangePwdActivity from './sidebarNavigationScreens/ChangePwdActivity';
+
+import admin_profile from './AdminPanel/admin_profile';
+import del_student from './AdminPanel/del_student';
+import del_advisor from './AdminPanel/del_advisor';
+import add_advisor from './AdminPanel/add_advisor';
+import AdminEditProfileActivity from './AdminPanel/AdminEditProfileActivity';
+
 console.disableYellowBox=true;
 const StudentTabNavigator = createMaterialBottomTabNavigator(
   {
@@ -448,6 +455,38 @@ const MainNavigator = createStackNavigator({
       headerTintColor: '#fff',
     }),
   },
+   
+  AdminProfile: {
+    screen: admin_profile,
+    navigationOptions: ({navigation}) => ({
+      header: null,
+    }),
+  },
+  Del_Std: {
+    screen: del_student,
+    navigationOptions: ({navigation}) => ({
+      headerShown: false,
+    }),
+  },
+  Del_Adv: {
+    screen: del_advisor,
+    navigationOptions: ({navigation}) => ({
+      headerShown: false,
+    }),
+  },
+  Add_Adv: {
+    screen: add_advisor,
+    navigationOptions: ({navigation}) => ({
+      headerShown: false,
+    }),
+  },
+  AdminEditProfile: {
+    screen: AdminEditProfileActivity,
+    navigationOptions: ({navigation}) => ({
+      headerShown: false,
+    }),
+  },
+    
 },
 
 );

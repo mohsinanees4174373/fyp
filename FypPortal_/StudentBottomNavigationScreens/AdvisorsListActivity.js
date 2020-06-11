@@ -19,7 +19,7 @@ import {SearchBar, ListItem} from 'react-native-elements';
 var url = require('../url');
 
 class AdvisorsListActivity extends Component {
-  /*
+  
   
 
   constructor(props) {
@@ -128,7 +128,7 @@ class AdvisorsListActivity extends Component {
       onPress ={this.navigateToProfile.bind(this, item)}
     />
   );
-  */
+  
   render() {
     
     return (
