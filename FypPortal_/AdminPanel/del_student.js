@@ -40,6 +40,7 @@ class del_student extends Component {
       email : '',
       stds: [],
       query: '',
+      std_id : 0,
   }
   };
   
@@ -103,6 +104,53 @@ class del_student extends Component {
         if(responseJson[0])
         {
             //Alert.alert('2');
+            fetch( url.base_url + "/getStdID", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              email: this.state.email,
+          })
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            if(responseJson[0])
+        {
+            //Alert.alert('2');
+            this.state.std_id = responseJson[0].stu_id;
+            //Alert.alert(this.state.std_id.toString());
+            fetch( url.base_url + "/delStudentRecordFromAppReq", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              std_id: this.state.std_id,
+          })
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            //if(responseJson[0])
+        {
+            //Alert.alert('2');
+            fetch( url.base_url + "/delStudentRecordFromFypReq", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              std_id: this.state.std_id,
+          })
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            //if(responseJson[0])
+        {
+            //Alert.alert('2');
             fetch( url.base_url + "/delStudent", {
             method: 'POST',
             headers: {
@@ -116,6 +164,18 @@ class del_student extends Component {
         .then((response) => response.json())
         .then((responseJson) => {
             Alert.alert('Student deleted successfully!');
+          })
+        }
+        
+          })
+        }
+ 
+          })
+        }
+        else
+        {
+          Alert.alert('Failed to remove student3!');
+        }
           })
         }
         else
