@@ -65,7 +65,7 @@ export default class  AdvisorAppointmentsActivity extends Component {
            this.setState({data: [{id : responseJson[0].app_ID,
             avatar_url: this.state.uri,
             name :responseJson[0].Name,
-            description: 'You have received appointment Request from '+ responseJson[0].Name,  }]})
+            description: 'You have received appointment Request from '+ responseJson[0].Name +' of date ' + responseJson[0].Date.slice(0,10) + ' during visiting hours',  }]})
 
           var i =0;
                for (i=1; i < Object.keys(responseJson).length ; i++)
@@ -86,7 +86,7 @@ export default class  AdvisorAppointmentsActivity extends Component {
                       id : responseJson[i].app_ID,
                       avatar_url: this.state.uri,
                       name : responseJson[i].Name,
-                      description: 'You have received appointment request from '+ responseJson[i].Name,
+                      description: 'You have received appointment request from '+ responseJson[i].Name +' of date ' + responseJson[i].Date.slice(0,10) + ' during visiting hours',
                       })
                 }
                
