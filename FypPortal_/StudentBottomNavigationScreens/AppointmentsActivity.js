@@ -1,155 +1,171 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable no-undef */
-import React, {Component} from 'react';
-import {StyleSheet,FlatList, Text, View, Button, YellowBox} from 'react-native';
-import {BottomNavigation} from 'react-native-paper';
-import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
+import React, { Component } from 'react';
 import faker from 'faker';
+import {View, FlatList,StyleSheet, AsyncStorage,YellowBox,Image} from 'react-native';
 import {SearchBar,ListItem} from 'react-native-elements';
-class AppointmentsActivity extends Component {
+import RNFetchBlob from 'rn-fetch-blob';
+var url = require('../url');
+
+
+
+export default class AppointmentsActivity extends Component {
+ 
   constructor(props) {
     super(props);
     this.state = {
       data: [],      
       search:'',
+      uri:'',
     };
-    this.arrayholder = [];
-    
-      this.state.data.push({
-      id : 1,
-      avatar_url: faker.image.avatar(),
-      //name : faker.name.firstName(),
-      description: "Shahzad Sadfar has accepted your appointment request.",    
-    },
-    {
-      id : 1,
-      avatar_url: faker.image.avatar(),
-      //name : faker.name.firstName(),
-      description: "Zia Afzal has accepted your appointment request.",
-    },
-    {
-      id : 1,
-      avatar_url: faker.image.avatar(),
-      //name : faker.name.firstName(),
-      description: "Murtaza Yousaf has accepted your appointment request.",
-    },
-    {
-      id : 1,
-      avatar_url: faker.image.avatar(),
-      //name : faker.name.firstName(),
-      description: "Shahzad Sadfar has accepted your appointment request.",
-    },
-    {
-      id : 1,
-      avatar_url: faker.image.avatar(),
-      //name : faker.name.firstName(),
-      description: "Sadia Shahzad has rejected your appointment request.",
-    },
-    {
-      id : 1,
-      avatar_url: faker.image.avatar(),
-      //name : faker.name.firstName(),
-      description: "Khadija Mariyam has rejected your appointment request.",
-    },
-    {
-      id : 1,
-      avatar_url: faker.image.avatar(),
-      //name : faker.name.firstName(),
-      description: "Anzar Ahmad has accepted your appointment request.",
-    },
-    
-    )
-    this.arrayholder = this.state.data;
-
     YellowBox.ignoreWarnings([
       'Warning: componentWillMount is deprecated',
       'Warning: componentWillReceiveProps is deprecated',
+      'Warning: Failed prop type',
+      'Warning: componentWillReceiveProps has been renamed',
+      'Warning: DatePickerAndroid has been merged with DatePickerIOS',
+      'Warning: TimePickerAndroid has been merged with DatePickerIOS',
+      `can't perform a React state update on an unmounted component`,
     ]);
+    
+    
   }
-  navigateToProfile=(item)=>(
-    this.props.navigation.navigate('',
-    {
-      image : faker.image.avatar(),
-      name: item.name,
-      description : item.description,
-      slots: 2,
-      available:true
-    }) )
+  _retriveData = async () => {
+    try {
+      console.log('retrivingData')
+      //await AsyncStorage.setItem('email', 'fareed@pucit.edu.pk');
+      const value = await AsyncStorage.getItem("email");
+  
+  
+      fetch( url.base_url + "/fetchAppointmentResponse", {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          email: value,
+          
+      })
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+        if(responseJson)
+        {
+          console.log("profile");
+          RNFetchBlob
+          .fetch('GET', url.base_url + "/getfile?path=" + responseJson[0].profile_Pic , {})
+          .then((res) => {    
+            
+          this.setState({uri:res.data});
+          //console.log(this.state.uri);
+           })
+          .catch((e) => {
+          console.log(e)
+          });
+           this.setState({data: [{id : responseJson[0].app_ID,
+            avatar_url: this.state.uri,
+            name :responseJson[0].Name,
+            description: responseJson[0].Name + ' has ' + responseJson[0].status + ' your Appointmnet Request of date ' + responseJson[0].Date.slice(0,10) ,  }]})
 
+          var i =0;
+               for (i=1; i < Object.keys(responseJson).length ; i++)
+                {
+                      console.log("profile");
+                      RNFetchBlob
+                      .fetch('GET', url.base_url + "/getfile?path=" + responseJson[0].profile_Pic , {})
+                      .then((res) => {    
+                        
+                      this.setState({uri:res.data});
+                      //console.log(this.state.uri);
+                      })
+                      .catch((e) => {
+                      console.log(e)
+                      });
+                      this.state.data.push(
+                        {
+                      id : responseJson[i].app_ID,
+                      avatar_url: this.state.uri,
+                      name : responseJson[i].Name,
+                      description:responseJson[i].Name + ' has ' + responseJson[0].status + ' your Appointmnet Request of date ' + responseJson[i].Date.slice(0,10) ,
+                      })
+                }
+               
+        }
+        else
+        {
+          alert('war gye');
+        }
+        
+      })
+  
+  
+    
+    } catch (error) {
+      console.log(error.message);
+    }
+    
+  }
+ 
+  componentDidMount(){
+    console.log('calling')
+    setInterval(this._retriveData,60000);
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {this._retriveData()});
+    this._retriveData();
+  }
+  componentWillUnmount() {
+    
+    clearInterval();
+    this.focusListener.remove();
+  }
   keyExtractor = (item, index) => index.toString()
 
   renderItem = ({ item }) => (
     <ListItem
-     // title={item.name}
+      title={item.name}
       titleStyle={styles.title}
       subtitle={item.description}
-      leftAvatar={{ source: { uri: item.avatar_url } ,size:70}}
+      //leftAvatar={{ source: { uri: item.avatar_url } ,size:70}}
+      leftAvatar ={ item.avatar_url ? <Image source={{uri: `data:jpeg;base64,${item.avatar_url}`}}  style={styles.circleImageLayout} /> :<Image source={require('../assets/images/av2.png')} style={styles.circleImageLayout}/>}
+      
+      onPress={ () => this.props.navigation.navigate('AppointmentResponseView',{
+        app_id: item.id,
+      })}
       bottomDivider
-      chevron={{color:'#2b60de',raised:true,name:'visibility',size:20, onPress:this.navigateToProfile.bind(this,item) }}
     />
-    )
-    render() {
-      //const { search } = this.state.search;
-      const {search} = this.state.search;
-    console.log("array"+this.arrayholder);
-    console.log("data"+this.state.data);
-
     
-        return (
-          <View style={{flex:1}}>  
-            
-        
-            <FlatList
-              keyExtractor={this.keyExtractor}
-              data={this.state.data}
-              renderItem={this.renderItem}
-            />
-          </View>
-        );
-      }
+  )
+  render() {
+    const { search } = this.state.search;
+  
+      return (
+        <View>  
+          
+          <FlatList
+            keyExtractor={this.keyExtractor}
+            data={this.state.data}
+            renderItem={this.renderItem}
+          />
+        </View>
+      );
+    }
 }
 
 const styles = StyleSheet.create({
-  MainContainer: {
-    flex: 1,
-    paddingTop: Platform.OS === 'ios' ? 20 : 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  sideMenuContainer: {
-    width: '100%',
-    height: '100%',
-
-    alignItems: 'center',
-    paddingTop: 20,
-  },
-
-  sideMenuProfileIcon: {
-    resizeMode: 'center',
-    width: 150,
-    height: 150,
-    borderRadius: 150 / 2,
-  },
-
-  sideMenuIcon: {
-    resizeMode: 'center',
-    width: 28,
-    height: 28,
-    marginRight: 10,
-    marginLeft: 20,
-  },
-
-  menuText: {
-    fontSize: 15,
-    color: '#222222',
-  },
   title: {
     color:'#2b60de',fontWeight:'bold'
   },
   container: {
     backgroundColor:'#2b60de'
   },
+  circleImageLayout: {
+    width: 70,
+    height: 70,
+    borderRadius: 200 / 2,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    borderColor:'#FFF',
+    borderWidth:2,
+    marginVertical:10
+    
+  },
 });
 
-export default AppointmentsActivity;

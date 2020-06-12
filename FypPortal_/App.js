@@ -24,6 +24,9 @@ import AppointmentsActivity from './StudentBottomNavigationScreens/AppointmentsA
 import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
+import AppointmentResponseViewScreen from './StudentBottomNavigationScreens/AppointmentResponseView';
+import FypResponseViewScreen from './StudentBottomNavigationScreens/FypRequestResponseView';
+
 import AboutUsActivity from './sidebarNavigationScreens/AboutUsActivity';
 import AdvisorsListActivity from './StudentBottomNavigationScreens/AdvisorsListActivity';
 import FypRequestActivity from './StudentBottomNavigationScreens/FypRequestActivity';
@@ -440,6 +443,29 @@ const MainNavigator = createStackNavigator({
       headerTintColor: '#fff',
     }),
   },
+  FypResponseView: {
+    screen: FypResponseViewScreen,
+    navigationOptions: ({navigation}) => ({
+      //headerShown: false,
+      title: 'FYP Response',
+      headerStyle: {
+        backgroundColor: '#2B60DE',
+      },
+      headerTintColor: '#fff',
+    }),
+  },
+  AppointmentResponseView: {
+    screen: AppointmentResponseViewScreen,
+    navigationOptions: ({navigation}) => ({
+      //headerShown: false,
+      title: 'Appointment Response',
+      headerStyle: {
+        backgroundColor: '#2B60DE',
+      },
+      headerTintColor: '#fff',
+    }),
+  },
+
   Stu_AdvisorProfile: {
     screen: Stu_AdvisorProfile,
     navigationOptions: ({navigation}) => ({
