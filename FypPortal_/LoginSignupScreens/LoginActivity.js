@@ -143,7 +143,7 @@ class LoginActivity extends Component {
               })
               .then(res => {
                 console.log(res);
-                alert(res);
+                //alert(res);
               });
           } else {
           alert("user doesn't have a device token yet");
