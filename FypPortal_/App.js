@@ -53,7 +53,7 @@ import StudentEditProfileActivity from './sidebarNavigationScreens/EditProfileAc
 import AdvisorCustom_Side_Menu from './StudentHomeAfterLogin/AdvisorCustom_Side_Menu';
 import AdvSignupActivity from './LoginSignupScreens/AdvSignupActivity';
 import ChangePwdActivity from './sidebarNavigationScreens/ChangePwdActivity';
-
+import PreviousFYPs from './ProfileScreens/PreviousFYPs';
 import admin_profile from './AdminPanel/admin_profile';
 import del_student from './AdminPanel/del_student';
 import del_advisor from './AdminPanel/del_advisor';
@@ -481,7 +481,15 @@ const MainNavigator = createStackNavigator({
       headerTintColor: '#fff',
     }),
   },
-   
+  PreviousFYPs: {
+    screen: PreviousFYPs,
+    navigationOptions: ({navigation}) => ({
+      headerStyle: {
+        backgroundColor: '#2B60DE',
+      },
+      headerTintColor: '#fff',
+    }),
+  },
   AdminProfile: {
     screen: admin_profile,
     navigationOptions: ({navigation}) => ({

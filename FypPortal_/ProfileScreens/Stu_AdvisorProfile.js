@@ -264,7 +264,7 @@ export default class Stu_AdvisorProfile extends Component {
     this.props.navigation.navigate('AppointmentForm',{id: this.state.id});
 
   navigateToFYPForm = item => this.props.navigation.navigate('FypForm');
-
+  navigateToPreviousFYPs = item => this.props.navigation.navigate('PreviousFYPs');
   render() {
     console.log("1");
     return (
@@ -356,8 +356,10 @@ export default class Stu_AdvisorProfile extends Component {
                 />
               <ListItem
                 title="Previous FYP"
-                subtitle="Previous Fyps ka link dalna"
+                subtitle="Information related to previous FYPs"
                 leftIcon={{name: 'done', color: '#2b60de'}}
+                chevron
+                onPress={() => this.props.navigation.navigate('PreviousFYPs',{id: this.state.id,user:'student'})}
               />
             
               </View>

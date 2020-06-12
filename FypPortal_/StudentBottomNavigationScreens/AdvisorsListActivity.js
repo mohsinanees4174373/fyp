@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
- 
->>>>>>> ef8faf3aa3d80c50bb25f3d5402e4a5331562311
 import React, {Component} from 'react';
 import {AsyncStorage, Navigator, Image} from 'react-native'
 import {

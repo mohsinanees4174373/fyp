@@ -212,6 +212,7 @@ export default class Adv_AdvisorProfile extends Component {
         file_type: res.type,
         description: this.state.file_description,
         name:this.state.file_name,
+        fyp:"0",
     })
   })
   .then((response) => response.json())
@@ -565,8 +566,10 @@ export default class Adv_AdvisorProfile extends Component {
                 />
                 <ListItem
                   title="Previous FYP"
-                  subtitle="Previous Fyps ka link dalna"
+                  subtitle="Information related to previous FYPs"
                   leftIcon={{name: 'done', color: '#2b60de'}}
+                  chevron
+                  onPress={() => this.props.navigation.navigate('PreviousFYPs',{id: this.state.id,user:'advisor'})}
                 />
              
               <Divider
