@@ -18,7 +18,7 @@
     "express": "^4.17.1",
     "faker": "^4.1.0",
     "jetifier": "^1.6.5",
-    "moment": "^2.26.0",
+    "moment": "^2.29.4",
     "mysql": "^2.18.1",
     "react": "16.11.0",
     "react-native": "0.62.2",
